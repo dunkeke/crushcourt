@@ -40,9 +40,10 @@ def get_user_passwords() -> dict:
     default_pw = {"me": "change-me-💕", "him": "change-him-🏸"}
 
     try:
-        secret_pw = st.secrets.get("access_passwords", {})
-        if isinstance(secret_pw, dict) and secret_pw.get("me") and secret_pw.get("him"):
-            return {"me": str(secret_pw["me"]), "him": str(secret_pw["him"])}
+        secret_pw = st.secrets.get("access_passwords")
+        # Streamlit secrets 的子表通常是 AttrDict，不一定是原生 dict
+        if secret_pw and secret_pw.get("me") and secret_pw.get("him"):
+            return {"me": str(secret_pw.get("me")), "him": str(secret_pw.get("him"))}
     except Exception:
         pass
 
