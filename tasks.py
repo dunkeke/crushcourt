@@ -5,6 +5,7 @@ import streamlit as st
 
 from database import MatchReminder, get_session
 from points import add_points
+from ai_gateway import generate_task_suggestion
 
 
 def create_match_task(title: str, opponent: str, match_date: datetime, location: str, created_by: str) -> bool:
@@ -60,6 +61,31 @@ def complete_match_task(task_id: int, user: str) -> bool:
         session.close()
 
 
+
+def render_ai_task_helper() -> None:
+    """AI 任务融合助手：把现实需求转成可执行清单。"""
+    st.markdown("### 🤖 AI 任务融合助手")
+    st.caption("可接入 DeepSeek / Kimi 等 OpenAI-compatible API。")
+
+    with st.form("ai_task_helper_form"):
+        prompt = st.text_area(
+            "输入你们当前需求",
+            placeholder="例如：这周要准备比赛、控制饮食、还要安排一次约会，如何分工？",
+            height=120,
+        )
+        submitted = st.form_submit_button("生成融合方案", use_container_width=True)
+        if submitted:
+            if not prompt.strip():
+                st.warning("请先输入需求")
+            else:
+                try:
+                    output = generate_task_suggestion(prompt.strip())
+                    st.success("已生成建议")
+                    st.markdown(output)
+                except Exception as e:
+                    st.error(f"调用 AI 失败：{e}")
+
+
 def render_tasks() -> None:
     st.markdown("## 🏆 赛事任务")
     st.caption("把比赛安排公开透明，互相支持。")
@@ -100,6 +126,8 @@ def render_tasks() -> None:
                             st.rerun()
         else:
             st.info("暂无待完成赛事。")
+
+    render_ai_task_helper()
 
     with st.expander("查看已完成赛事"):
         done_tasks = get_match_tasks(show_completed=True)
