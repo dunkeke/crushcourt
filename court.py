@@ -8,8 +8,8 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
-from modules import get_session, LoveRecord
-from utils.visualizations import create_emotion_timeline
+from database import get_session, LoveRecord
+from visualizations import create_emotion_timeline
 import plotly.graph_objects as go
 
 # 记录类型和对应的emoji
@@ -69,7 +69,7 @@ def save_love_record(sender, receiver, record_type, action, content, emotion_sco
         
         # 如果是发球，给对方加积分
         if action == 'serve':
-            from modules.points import add_points
+            from points import add_points
             add_points(sender, 5, f'发布新动态：{content[:20]}...')
         
         return True
@@ -135,7 +135,7 @@ def respond_to_record(record_id, response_action, response_content):
             session.commit()
             
             # 加分：回应对方
-            from modules.points import add_points
+            from points import add_points
             add_points(st.session_state.user, 3, f'回应了{get_user_display(record.sender)}')
             
             return True
