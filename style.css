@@ -1,0 +1,67 @@
+/* 球场主题色 */
+:root {
+    --court-green: #1b4d1b;
+    --court-light: #2d6a2d;
+    --court-white: #f0f7f0;
+    --love-pink: #ff69b4;
+    --love-gold: #ffd700;
+}
+
+/* 全局样式 */
+.stApp {
+    background: linear-gradient(135deg, var(--court-green), var(--court-light));
+}
+
+/* 卡片样式 */
+.court-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    margin: 10px 0;
+}
+
+/* 球场网 */
+.court-net {
+    background: linear-gradient(90deg, transparent 0%, white 20%, white 80%, transparent 100%);
+    height: 2px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.court-net::before {
+    content: "🏸";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+    font-size: 20px;
+}
+
+/* 羽毛球样式 */
+.shuttlecock {
+    font-size: 24px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 按钮样式 */
+.love-button {
+    background: linear-gradient(45deg, var(--love-pink), #ff1493);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.love-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+}
